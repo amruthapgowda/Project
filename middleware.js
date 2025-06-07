@@ -1,7 +1,7 @@
-const Listing=require("../models/listing");
-const Review=require("../models/reviews");
-const ExpressError=require("../utils/ExpressError.js");
-const {listingSchema,reviewSchema}=require("../schema.js");
+const Listing=require("./models/listing");
+const Review=require("./models/reviews");
+const ExpressError=require("./utils/ExpressError.js");
+const {listingSchema,reviewSchema}=require("./schema.js");
 
 
 module.exports.isloggedIn=(req,res,next)=>{
