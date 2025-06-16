@@ -108,3 +108,8 @@ body{
     background-color: #c82333 !important;
     border-color: #bd2130 !important;
 }
+/*map*/
+#map{
+    height: 400px;
+    width:80vh;
+}

@@ -1,22 +1,29 @@
-const express=require("express");
-const router=express.Router();
-const wrapAsync=require("../utils/wrapAsync.js");
-const Listing=require("../models/listing.js");
-const {isloggedIn,isOwner,validateListing}=require("../middleware.js")
-const listingController=require("../controllers/listings");
+const express = require("express");
+const router = express.Router();
+const wrapAsync = require("../utils/wrapAsync.js");
+const Listing = require("../models/listing.js");
+const { isloggedIn, isOwner, validateListing } = require("../middleware.js")
+const listingController = require("../controllers/listings");
+const multer = require('multer')
+const { storage } = require("../cloudConfig.js")
+const upload = multer({ storage });
+
+
 
 router
-.route("/")
-.get(wrapAsync(listingController.index))
-.post(isloggedIn, validateListing,wrapAsync(listingController.createListing));
+    .route("/")
+    .get(wrapAsync(listingController.index))
+    .post(isloggedIn, upload.single('listing[image][url]'),validateListing, wrapAsync(listingController.createListing));
+
 
 //new route
-router.get("/new",isloggedIn,listingController.renderNewForm);//15
+router.get("/new", isloggedIn, listingController.renderNewForm);//15
+
 router
-.route("/:id")
-.get(wrapAsync(listingController.showListing))//14
-.put(isloggedIn,validateListing,wrapAsync(listingController.updateListing))
-.delete(isloggedIn,isOwner,wrapAsync(listingController.destroyListing));
+    .route("/:id")
+    .get(wrapAsync(listingController.showListing))//14
+    .put(isloggedIn,upload.single('listing[image][url]'), validateListing, wrapAsync(listingController.updateListing))
+    .delete(isloggedIn, isOwner, wrapAsync(listingController.destroyListing));
 
 
 //index route
@@ -26,11 +33,11 @@ router
 //create route 16
 // router.post("/",isloggedIn, validateListing,wrapAsync(listingController.createListing));
 //Edit route 17
-router.get("/:id/edit",isloggedIn,isOwner,wrapAsync(listingController.renderEditForm));
+router.get("/:id/edit", isloggedIn, isOwner, wrapAsync(listingController.renderEditForm));
 //Update route 18
 // router.put("/:id",isloggedIn,validateListing,wrapAsync(listingController.updateListing));
 //delete route 19
 // router.delete("/:id",isloggedIn,isOwner,wrapAsync(listingController.destroyListing));
 
 
-module.exports=router;
+module.exports = router;
