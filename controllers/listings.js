@@ -89,6 +89,7 @@ module.exports.createListing = async (req, res, next) => {
     const newListing = new Listing(req.body.listing);
     newListing.owner = req.user._id;
     newListing.geometry = geometry;
+    console.log(req.file);
 
     if (req.file) {
       newListing.image = {
@@ -125,10 +126,13 @@ module.exports.renderEditForm = async (req, res, next) => {
     next(err);
   }
 };
+
 module.exports.updateListing = async (req, res, next) => {
+  console.log(req.body.listing)
   try {
     const { id } = req.params;
     const listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+    
 
     if (!listing) {
       req.flash("error", "Listing you requested does not exist");
